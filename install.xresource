@@ -1,0 +1,22 @@
+urxvt.perl-lib:                     /blue/urxvt-font
+urxvt.keysym.Control-Shift-Up:      perl:font:increment
+urxvt.keysym.Control-Shift-Down:    perl:font:decrement
+
+! dark background
+urxvt.reverseVideo: true
+urxvt.scrollBar: false
+
+urxvt.perl-ext-common:              font
+
+! emulate browser zoom behaviour
+urxvt.keysym.Control-plus:     perl:font:increment
+urxvt.keysym.Control-equal:    perl:font:increment
+urxvt.keysym.Control-minus:    perl:font:decrement
+
+! emulate OSX terminal
+urxvt.keysym.Control-Up:      perl:font:increment
+urxvt.keysym.Control-Down:    perl:font:decrement
+
+! change font
+urxvt.keysym.Control-Left:   perl:font:previous
+urxvt.keysym.Control-Right:  perl:font:next
