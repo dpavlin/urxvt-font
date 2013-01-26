@@ -1,0 +1,3 @@
+urxvt*boldColors: on
+urxvt*font:     xft:Terminus:pixelsize=20:antialias=true:hinting=true:medium
+urxvt*boldFont: xft:Terminus:pixelsize=20:antialias=true:hinting=true:bold
