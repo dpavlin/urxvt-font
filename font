@@ -138,6 +138,35 @@ sub change_size
   system("xrdb -edit " . X_RESOURCES);
 }
 
+sub change_font {
+	my ($self,$direction) = @_;
+
+	$direction = ( $direction =~ m/next/ ? 1 : -1 );
+
+	my $r = $self->{term}->resource("font");
+
+  	my $font = $1 if $r =~ /xft:([^:]+)/;
+  	my $size = $1 if $r =~ /pixelsize=(\d+)/;
+
+	open(my $fcList, '-|', 'fc-list ":spacing=mono:scalable=true" family');
+	my @fonts = map { chomp; $_ } <$fcList>;
+	warn "# fonts ", join('|',@fonts);
+	my $found = 0;
+	foreach my $i ( 0 .. $#fonts ) {
+		next if $fonts[$i] ne $font;
+		$font = $fonts[ ($i+$direction) % ($#fonts+1) ];
+		$found = 1;
+		last;
+	}
+	$font = $fonts[0] if ! $found;
+
+	my $font_resized = "xft:$font:pixelsize=$size";
+	warn "# font_resized: $font_resized\n";
+	$self->{term}->cmd_parse("\e]710;" . $font_resized . "\007");
+  	$self->{term}->resource("font", $font_resized);
+  	$self->{term}->resource("boldFont", $font_resized . ':bold' );
+}
+
 sub on_user_command
 {
   # This function is called whenever some urxvt.keysym.*: perl:x:y
@@ -150,5 +179,8 @@ sub on_user_command
   if ($cmd =~ /font:(..crement)/)   # {in, de, ex}
   {
     $self->change_size(($1 eq "increment") ? +1 : -1);
+  }
+  elsif ($cmd =~ /font:(next|prev)/) {
+    $self->change_font($1);
   }
 }
