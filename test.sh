@@ -1,5 +1,7 @@
 #!/bin/sh -ex
 
+cd `dirname $0`
+
 if [ ! -z "$1" ] ; then
 cat font.xrdb | sed s/Terminus/$1/g > fonts/$1
 xrdb -merge fonts/$1
