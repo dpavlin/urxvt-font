@@ -151,7 +151,8 @@ sub change_font {
 
 	open(my $fcList, '-|', 'fc-list ":spacing=mono:scalable=true" family');
 	my @fonts = map { chomp; $_ } <$fcList>;
-	warn "# fonts ", join('|',@fonts);
+	push @fonts, map { s/fonts\///; $_ } glob "fonts/*";
+	warn "# fonts [", join('] [',@fonts), "]\n";
 	my $found = 0;
 	foreach my $i ( 0 .. $#fonts ) {
 		next if $fonts[$i] ne $font;
